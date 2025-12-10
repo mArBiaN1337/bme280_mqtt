@@ -1,0 +1,15 @@
+{
+    "network": {
+        "ssid": "marbianNet",
+        "password": "marbian0xFFFF"
+    },
+    "mqtt":{
+        "broker_ip": "192.168.137.18",
+        "username": "marbianpi",
+        "password": "pi",
+        "topic_pub": "bme280/data",
+        "msg_interval": 5,
+        "qos": 1
+    }
+
+}
