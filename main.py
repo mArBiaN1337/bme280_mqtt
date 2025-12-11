@@ -265,6 +265,7 @@ if __name__ == "__main__":
                         json_data = f.read()
                     
                     mqtt_client.publish(bme_logger.TOPIC_PUB, json_data)
+                    print("Published data to MQTT broker:", json_data)
                     bme_logger.LAST_MSG = time.time()
                     bme_logger.blink_onboard_led(times=1, interval=0.1)
             
