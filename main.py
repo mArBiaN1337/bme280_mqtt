@@ -76,9 +76,12 @@ class BMELogger:
         self.MQTT_SERVER = config["mqtt"]["broker_ip"]
         self.MQTT_USER = config["mqtt"]["username"]
         self.MQTT_PASSWORD = config["mqtt"]["password"]
+        self.MQTT_PORT = config["mqtt"]["port"]
         self.TOPIC_PUB = config["mqtt"]["topic_pub"].encode('utf-8')
         self.MSG_INTERVAL = config["mqtt"]["msg_interval"]
         self.QOS = config["mqtt"]["qos"]
+        self.MQTT_SSL_CA_CERT = config["mqtt"]["ssl"]["cert"]
+        self.MQTT_SSL_KEY = config["mqtt"]["ssl"]["key"]
 
     def get_wifi_config(self):
         
@@ -214,7 +217,15 @@ class BMELogger:
 
     def connect_mqtt(self):
         try:
-            self.client = MQTTClient(self.MQTT_CLIENT_ID, self.MQTT_SERVER, user=self.MQTT_USER, password=self.MQTT_PASSWORD)
+            self.client = MQTTClient(self.MQTT_CLIENT_ID,
+                                      self.MQTT_SERVER, 
+                                      user=self.MQTT_USER, 
+                                      password=self.MQTT_PASSWORD,
+                                      port=self.MQTT_PORT,
+                                      ssl=True,
+                                      ssl_params={"server_hostname": self.MQTT_SERVER,
+                                                  "key": open(self.MQTT_SSL_KEY,"rb").read(),
+                                                  "cert": open(self.MQTT_SSL_CA_CERT,"rb").read()})
             self.client.connect()
             self.blink_onboard_led()
 
@@ -238,7 +249,8 @@ if __name__ == "__main__":
 
         try:
             mqtt_client = bme_logger.connect_mqtt()
-        except OSError:
+        except Exception as e:
+            print('MQTT connection error:', e)
             bme_logger.restart_reconnect()
 
         while True:

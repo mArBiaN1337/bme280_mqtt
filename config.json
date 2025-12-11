@@ -4,12 +4,17 @@
         "password": "marbian0xFFFF"
     },
     "mqtt":{
-        "broker_ip": "192.168.137.18",
+        "broker_ip": "marbianpi.local",
         "username": "marbianpi",
         "password": "pi",
         "topic_pub": "bme280/data",
+        "port": 8883,
         "msg_interval": 5,
-        "qos": 1
+        "qos": 1,
+        "ssl":{
+            "key": "ca.key",
+            "cert": "ca.crt"
+        }
     }
 
 }
